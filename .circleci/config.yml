@@ -132,6 +132,17 @@ jobs:
         paths:
           - ~/.m2
         key: maven-repo-v2-{{ .Branch }}-{{ checksum "pom.xml" }}
+    - run:
+        name: Run unit tests
+        command: |
+          mvn test
+    - run:
+        name: Generate test report
+        command: |
+          mvn surefire-report:report
+    - store_artifacts:
+        path: target/site/surefire-report.html
+        destination: test-report.html
   deploy:
     resource_class: large
     docker:
